@@ -1,0 +1,31 @@
+<results>
+    <quota authorize='300' use='1' reset_date='2010-08-04 12:45:26'/>
+    <query>The Men Who Stare At Goats</query>
+    <movie><id>136356</id>
+        <id_allocine>136356</id_allocine>
+        <id_imdb>1234548</id_imdb>
+        <last_change>1279466676</last_change>
+        <url>http://passion-xbmc.org/scraper/index2.php?Page=ViewMovie&amp;ID=136356</url>
+        <title>Les Chèvres du Pentagone</title>
+        <originaltitle>The Men Who Stare at Goats</originaltitle>
+        <year>2009</year>
+        <runtime>90</runtime>
+        <directors>
+            <director>Grant Heslov</director>
+        </directors>
+        <plot>Bob Wilton, un journaliste désespéré fait l'heureuse rencontre de Lyn Cassady, un soldat aux pouvoirs paranormaux combattant le terrorisme. Ils se rendent ensemble en Irak ou ils rencontrent Bill Django, le fondateur de l'unité, et Larry Hooper, soldat de l'unité qui dirige une prison.</plot>
+        <images>
+            <image size='original' url='http://passion-xbmc.org/scraper/Gallery/main/Poster_LesChvresduPentagone-311335.jpg' id='311335' type='Poster' height='2716' width='2000'/>
+            <image size='preview' url='http://passion-xbmc.org/scraper/Gallery/preview/Poster_LesChvresduPentagone-311335.jpg' id='311335' type='Poster'/>
+            <image size='thumb' url='http://passion-xbmc.org/scraper/Gallery/thumb/Poster_LesChvresduPentagone-311335.jpg' id='311335' type='Poster'/>
+            <image size='original' url='http://passion-xbmc.org/scraper/Gallery/main/Fanart_LesChvresduPentagone-316672.jpg' id='316672' type='Fanart' height='1080' width='1920'/>
+            <image size='preview' url='http://passion-xbmc.org/scraper/Gallery/preview/Fanart_LesChvresduPentagone-316672.jpg' id='316672' type='Fanart'/>
+            <image size='thumb' url='http://passion-xbmc.org/scraper/Gallery/thumb/Fanart_LesChvresduPentagone-316672.jpg' id='316672' type='Fanart'/>
+    </images>
+    <ratings>
+        <rating votes='1603' type='allocine'>2,5</rating>
+        <rating votes='30695' type='imdb'>6,4</rating>
+        <rating votes='1' type='cinepassion'>7</rating>
+    </ratings>
+    </movie>
+</results>
