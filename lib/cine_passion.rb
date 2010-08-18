@@ -1,19 +1,37 @@
+# This class can be used to extract data from Cine Passion scraper
+#
+# = API Key
+# Please watch README file
+#
+# = Other stuff
+# Author::    Nicolas Ledez nicolas (chez) ledez.net
+# Copyright:: Copyright (c) 2010 Nicolas Ledez
+# License::   Distributes under the same terms as Ruby
+#
+# == Warranty
+# This software is provided "as is" and without any express or implied warranties, including, without limitation, the implied warranties of merchantibility and fitness for a particular purpose.
+
 require 'uri'
 require 'net/http'
 require 'rexml/document'
 include REXML
 
 class CinePassion
-  attr_reader :data, :movie_info, :result_nb, :status, :quota
+  attr_reader :xml_data, :movie_info, :result_nb, :status, :quota
 
+  # This class does not require parameters
+  # First action is reset object
   def initialize
      self.DataReset()
   end
 
+  # Reset object (With empty XML xml_data)
   def DataReset()
-    @data = ""
+    @xml_data = ""
   end
 
+  # Load XML data from online Cine Passion Scraper
+  # Put movie name in parameter
   def DataLoadFromSite(search)
     query="Title" #|IMDB"
     lang="fr" # / en"
@@ -27,17 +45,38 @@ class CinePassion
         http.get(url.path)
     }
 
-    @data = res.body
+    @xml_data = res.body
     self.ScrapAnalyse()
   end
 
+  # Load XML data from file
+  # Put filename with full path in parameter
   def DataLoadFromFile(filename)
     file = File.new(filename)
 
-    @data = file
+    @xml_data = file
     self.ScrapAnalyse()
   end
 
+  # Explore XML data to extract informations
+  # At this time the class get there informations:
+  # * Movie
+  #  - id
+  #  - id_allocine
+  #  - id_imdb
+  #  - last_change
+  #  - url
+  #  - title
+  #  - originaltitle
+  #  - year
+  #  - runtime
+  #  - plot
+  #  - images => TODO
+  #  - ratings => TODO
+  # * Quota
+  #  - authorize
+  #  - use
+  #  - reset_date
   def ScrapAnalyse()
     @result = {}
     @line = ""
@@ -46,7 +85,7 @@ class CinePassion
     @result_nb = 0
     @quota = {}
 
-    doc = Document.new(@data)
+    doc = Document.new(@xml_data)
     root = doc.root
 
     root.each_element('movie') { |element|
@@ -93,6 +132,7 @@ class CinePassion
     return @result
   end
 
+  # Scrap get a filename with garbage information & clean it
   def Scrap(search)
     short_name = search.gsub(/\./, ' ')
     short_name.gsub!(/ (DVDRip|LiMiTED|REPACK|720p|FRENCH|UNRATED|iNTERNAL|TRUEFRENCH).*$/, '')

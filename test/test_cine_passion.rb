@@ -12,45 +12,45 @@ class TestCinePassion < Test::Unit::TestCase
 
   def test_data_load_and_reset
     @test = CinePassion.new
-    assert_equal(@test.data, "")
+    assert_equal(@test.xml_data, "")
 
     @test.DataLoadFromFile("test/data/cinepassion-scraper-test-01-one-response.xml")
-    assert_not_equal(@test.data, "")
+    assert_not_equal(@test.xml_data, "")
 
     @test.DataReset()
-    assert_equal(@test.data, "")
+    assert_equal(@test.xml_data, "")
   end
 
   def test_data_load_from_xml
     @test = CinePassion.new
 
     @test.DataLoadFromFile("test/data/cinepassion-scraper-test-01-one-response.xml")
-    assert_not_equal(@test.data, "")
+    assert_not_equal(@test.xml_data, "")
   end
 
   def test_data_load_from_network
     @test = CinePassion.new
 
     @test.DataLoadFromSite("Home")
-    assert_not_equal(@test.data, "")
+    assert_not_equal(@test.xml_data, "")
   end
 
   def test_scrap_load_data
     @test = CinePassion.new
 
     @test.Scrap("Home")
-    assert_not_equal(@test.data, "")
+    assert_not_equal(@test.xml_data, "")
   end
 
   def test_xml_load_data
     @test = CinePassion.new
 
     @test.DataLoadFromFile("test/data/cinepassion-scraper-test-00-no-response.xml")
-    assert_not_equal(@test.data, "")
+    assert_not_equal(@test.xml_data, "")
     assert_equal(@test.result_nb, 0)
 
     @test.DataLoadFromFile("test/data/cinepassion-scraper-test-01-one-response.xml")
-    assert_not_equal(@test.data, "")
+    assert_not_equal(@test.xml_data, "")
     assert_equal(@test.result_nb, 1)
     assert_equal(@test.movie_info['id'], "136356")
     assert_equal(@test.movie_info['id_allocine'], "136356")
@@ -67,7 +67,7 @@ class TestCinePassion < Test::Unit::TestCase
     assert_equal(@test.quota['reset_date'], "2010-08-04 12:45:26")
 
     @test.DataLoadFromFile("test/data/cinepassion-scraper-test-02-mutiple-response.xml")
-    assert_not_equal(@test.data, "")
+    assert_not_equal(@test.xml_data, "")
     assert_equal(@test.quota['authorize'], "300")
     assert_equal(@test.quota['use'], "2")
     assert_equal(@test.quota['reset_date'], "2010-08-04 12:45:26")
