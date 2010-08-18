@@ -1,3 +1,15 @@
-First start with sample files to test your cine-passion scraper
+== To start
+In my project, you can find my Cine Passion API Key.
 
-Library coming soon
+Please don't use mine.
+
+In fact if you need a key for your own project, you can request one here :
+http://passion-xbmc.org/demande-clef-api-api-key-request/
+
+== XML Sample files
+To start devel on my project I made sample files. You can found them on test/data folder. At this time I have theres :
+cinepassion-scraper-test-00-no-response.xml -> No response from scraper
+cinepassion-scraper-test-01-one-response.xml -> One result from scraper
+cinepassion-scraper-test-02-mutiple-response.xml -> Many result from scraper
+
+In "exploded" directory, I have "translate" files in human readable format (only with indentation ;) ). Do not use there files.
