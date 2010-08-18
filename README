@@ -1,4 +1,4 @@
-== To start
+== Cine Passion API Key
 In my project, you can find my Cine Passion API Key.
 
 Please don't use mine.
@@ -13,3 +13,9 @@ cinepassion-scraper-test-01-one-response.xml -> One result from scraper
 cinepassion-scraper-test-02-mutiple-response.xml -> Many result from scraper
 
 In "exploded" directory, I have "translate" files in human readable format (only with indentation ;) ). Do not use there files.
+
+== Check if my lib work in your side
+- Install ruby
+- ruby -Ilib test/test_cine_passion.rb
+
+== Sample files comming soon
