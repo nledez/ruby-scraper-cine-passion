@@ -113,7 +113,21 @@ class CinePassion
       @movie_info['runtime'] = root.elements['movie'].elements['runtime'].text
       @movie_info['plot'] = root.elements['movie'].elements['plot'].text
       @movie_info['images'] = []
-      @movie_info['ratings'] = []
+
+      @movie_info['ratings'] = {}
+      @movie_info['ratings']['cinepassion'] = {}
+      @movie_info['ratings']['allocine'] = {}
+      @movie_info['ratings']['imdb'] = {}
+      ratings = root.elements['movie'].elements["ratings"]
+      ratings_cinepassion = ratings.elements["rating[@type='cinepassion']"]
+      @movie_info['ratings']['cinepassion']['votes'] = ratings_cinepassion.attributes['votes']
+      @movie_info['ratings']['cinepassion']['value'] = ratings_cinepassion.text
+      ratings_allocine = ratings.elements["rating[@type='allocine']"]
+      @movie_info['ratings']['allocine']['votes'] = ratings_allocine.attributes['votes']
+      @movie_info['ratings']['allocine']['value'] = ratings_allocine.text
+      ratings_imdb = ratings.elements["rating[@type='imdb']"]
+      @movie_info['ratings']['imdb']['votes'] = ratings_imdb.attributes['votes']
+      @movie_info['ratings']['imdb']['value'] = ratings_imdb.text
     end
 
     if @status > 0

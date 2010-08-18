@@ -62,6 +62,13 @@ class TestCinePassion < Test::Unit::TestCase
     assert_equal(@test.movie_info['year'], "2009")
     assert_equal(@test.movie_info['runtime'], "90")
     assert_equal(@test.movie_info['plot'], "Bob Wilton, un journaliste désespéré fait l'heureuse rencontre de Lyn Cassady, un soldat aux pouvoirs paranormaux combattant le terrorisme. Ils se rendent ensemble en Irak ou ils rencontrent Bill Django, le fondateur de l'unité, et Larry Hooper, soldat de l'unité qui dirige une prison.")
+    assert_equal(@test.movie_info['ratings']['cinepassion']['votes'], "1")
+    assert_equal(@test.movie_info['ratings']['cinepassion']['value'], "7")
+    assert_equal(@test.movie_info['ratings']['allocine']['votes'], "1603")
+    assert_equal(@test.movie_info['ratings']['allocine']['value'], "2,5")
+    assert_equal(@test.movie_info['ratings']['imdb']['votes'], "30695")
+    assert_equal(@test.movie_info['ratings']['imdb']['value'], "6,4")
+
     assert_equal(@test.quota['authorize'], "300")
     assert_equal(@test.quota['use'], "1")
     assert_equal(@test.quota['reset_date'], "2010-08-04 12:45:26")
