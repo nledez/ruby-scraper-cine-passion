@@ -16,6 +16,8 @@ require 'net/http'
 require 'rexml/document'
 include REXML
 
+require 'cine_passion_config'
+
 class CinePassion
   attr_reader :xml_data, :movie_info, :result_nb, :status, :quota
 
@@ -36,9 +38,7 @@ class CinePassion
     query="Title" #|IMDB"
     lang="fr" # / en"
     format="XML"
-    apikey="6f518c31f6baa365f55c38d11cc349d1"
-    api_url="http://passion-xbmc.org/scraper/API/1/Movie.Search/#{query}/#{lang}/#{format}/#{apikey}/#{search}"
-
+    api_url="#{SITEURL}/scraper/API/1/Movie.Search/#{query}/#{lang}/#{format}/#{APIKEY}/#{search}"
 
     url = URI.parse(URI.escape(api_url))
         res = Net::HTTP.start(url.host, url.port) {|http|

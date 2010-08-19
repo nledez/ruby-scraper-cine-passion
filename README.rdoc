@@ -1,10 +1,13 @@
 == Cine Passion API Key
-In my project, you can find my Cine Passion API Key.
+In my project, you can't find Cine Passion API Key.
 
-Please don't use mine.
-
-In fact if you need a key for your own project, you can request one here :
+In fact you need a key your own side, you can request one here :
 http://passion-xbmc.org/demande-clef-api-api-key-request/
+
+To install your own key :
+cp lib/cine_passion_config.rb.sample lib/cine_passion_config.rb
+
+And replace APIKEY
 
 == XML Sample files
 To start devel on my project I made sample files. You can found them on test/data folder. At this time I have theres :
