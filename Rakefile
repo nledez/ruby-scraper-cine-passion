@@ -1,5 +1,17 @@
 require 'rcov/rcovtask'
 require 'rake/rdoctask'
+require 'rubygems'
+require 'rake'
+require 'echoe'
+
+Echoe.new('cine-passion', '0.5.0') do |p|
+    p.description    = "Use Cine Passion scraper http://passion-xbmc.org/scraper-cine-passion-support-francais/ http://passion-xbmc.org/scraper/."
+    p.url            = "http://github.com/nledez/ruby-scraper-cine-passion"
+    p.author         = "Nicolas Ledez"
+    p.email          = "gem.cinepassion@ledez.net"
+    p.ignore_pattern = ["tmp/*", "script/*"]
+    p.development_dependencies = []
+end
 
 task :default => [:rcov]
 
