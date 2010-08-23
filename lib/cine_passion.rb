@@ -21,6 +21,18 @@ require 'cine_passion_config'
 class CinePassion
   attr_reader :xml_data, :movie_info, :result_nb, :status, :quota
 
+  VERSION = '0.5.0'
+ unless defined? MAJOR
+   MAJOR  = 0
+   MINOR  = 5
+   TINY   = 0
+   PRE    = nil
+
+   STRING = [MAJOR, MINOR, TINY, PRE].compact.join('.')
+
+   SUMMARY = "cine-passion #{STRING}"
+ end
+
   # This class does not require parameters
   # First action is reset object
   def initialize
