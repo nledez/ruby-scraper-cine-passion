@@ -16,7 +16,13 @@ require 'net/http'
 require 'rexml/document'
 include REXML
 
-require 'cine_passion_config'
+begin
+   require 'cine_passion_config'
+rescue LoadError => load_error
+   "puts __FILE__"
+   SITEURL="http://passion-xbmc.org"
+   APIKEY="fake-7945cb2d5ba3d5f6ebf26239400ba4ca-fake"
+end
 
 class CinePassion
   attr_reader :xml_data, :movie_info, :result_nb, :status, :quota
