@@ -19,9 +19,15 @@ include REXML
 begin
    require 'cine_passion_config'
 rescue LoadError => load_error
-   "puts __FILE__"
-   SITEURL="http://passion-xbmc.org"
+   # Define default variables
+   SITEURL="http://scraper-cine-passion-demo.ledez.net"
    APIKEY="fake-7945cb2d5ba3d5f6ebf26239400ba4ca-fake"
+
+   puts File.join(File.dirname(__FILE__), 'cine_passion_config.rb.sample') + " is missing"
+   puts " Please see README to create it"
+   puts "currently I use theres values :"
+   puts "SITEURL: #{SITEURL}"
+   puts "APIKEY; #{APIKEY}"
 end
 
 class CinePassion

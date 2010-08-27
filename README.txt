@@ -57,6 +57,12 @@ cinepassion-scraper-test-02-mutiple-response.xml -> Many result from scraper
 
 In "exploded" directory, I have "translate" files in human readable format (only with indentation ;) ). Do not use there files.
 
+* Demo mode
+By default if you not create a lib/cine_passion_config.rb you are in demo mode :
+- Query: "noresult" => Return cinepassion-scraper-test-00-no-response.xml
+- Query: "Home" => Return cinepassion-scraper-test-01-one-response.xml
+- Query: "The Men Who Stare At Goats" => Return cinepassion-scraper-test-02-mutiple-response.xml
+- Other query => Random result of above
 
 == LICENSE:
 
