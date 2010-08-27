@@ -21,29 +21,21 @@ begin
 rescue LoadError => load_error
    # Define default variables
    SITEURL="http://scraper-cine-passion-demo.ledez.net"
-   APIKEY="fake-7945cb2d5ba3d5f6ebf26239400ba4ca-fake"
+   APIKEY="fake-7945cb-fake"
 
-   puts File.join(File.dirname(__FILE__), 'cine_passion_config.rb.sample') + " is missing"
+   puts '*'*50
+   puts File.join(File.dirname(__FILE__), 'cine_passion_config.rb') + " is missing"
    puts " Please see README to create it"
    puts "currently I use theres values :"
    puts "SITEURL: #{SITEURL}"
    puts "APIKEY; #{APIKEY}"
+   puts '*'*50
 end
 
 class CinePassion
   attr_reader :xml_data, :movie_info, :result_nb, :status, :quota
 
-  VERSION = '0.5.0'
- unless defined? MAJOR
-   MAJOR  = 0
-   MINOR  = 5
-   TINY   = 0
-   PRE    = nil
-
-   STRING = [MAJOR, MINOR, TINY, PRE].compact.join('.')
-
-   SUMMARY = "cine-passion #{STRING}"
- end
+  VERSION = '0.6.0'
 
   # This class does not require parameters
   # First action is reset object
@@ -96,7 +88,7 @@ class CinePassion
   #  - runtime
   #  - plot
   #  - images => TODO
-  #  - ratings => TODO
+  #  - ratings
   # * Quota
   #  - authorize
   #  - use

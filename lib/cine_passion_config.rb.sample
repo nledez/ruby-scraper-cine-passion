@@ -1,3 +1,2 @@
-#!/usr/bin/env ruby
 SITEURL="http://passion-xbmc.org"
-APIKEY="fake-7945cb2d5ba3d5f6ebf26239400ba4ca-fake"
+APIKEY="your_key_here_ruby_cine_passion"

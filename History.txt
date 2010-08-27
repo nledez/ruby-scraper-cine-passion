@@ -5,3 +5,8 @@
   * Yes!
 
 
+=== 0.6.0 / 2010-08-27
+
+* Have demo mode
+
+  * If you have'nt configure package, you are in a demo mode
