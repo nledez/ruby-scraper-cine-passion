@@ -41,9 +41,9 @@ if not (defined? APIKEY || (not APIKEY.nil?))
 end
 
 class CinePassion
-  attr_reader :xml_data, :movie_info, :result_nb, :status, :quota
+  attr_reader :xml_data, :movies_info, :result_nb, :status, :quota
 
-  VERSION = '0.6.0'
+  VERSION = '0.7.0'
 
   # This class does not require parameters
   # First action is reset object
@@ -84,6 +84,53 @@ class CinePassion
 
   # Explore XML data to extract informations
   # At this time the class get there informations:
+  # * Movie -> See ScrapAnalyseOneMovie function
+  # * Quota
+  #  - authorize
+  #  - use
+  #  - reset_date
+  def ScrapAnalyse()
+    @result = {}
+    @line = ""
+    @result['status'] = 0
+    @result_nb = 0
+    @quota = {}
+    @movies_info = []
+
+    doc = Document.new(@xml_data)
+    root = doc.root
+
+    @movies_info = []
+    root.each_element('movie') do |movie|
+      @movies_info.push ScrapAnalyseOneMovie(movie)
+    end
+    @result_nb = @movies_info.count()
+
+    if @result_nb == 0
+      @status = 0
+    elsif @result_nb == 1
+      @status = 1
+    elsif @result_nb > 1
+      @status = 2
+    end
+    
+    quota = root.elements['quota']      
+    if not quota.nil?
+       @quota['authorize']  = quota.attributes['authorize']
+       @quota['use']        = quota.attributes['use']
+       @quota['reset_date'] = quota.attributes['reset_date']
+    end
+
+    @result['quota'] = @quota
+    @result['result_nb'] = @result_nb
+    @result['line'] = @line
+    @result['xml'] = doc.root
+    @result['status'] = @status
+    @result['movies_info'] = @movies_info
+
+    return @result
+  end
+
   # * Movie
   #  - id
   #  - id_allocine
@@ -95,102 +142,62 @@ class CinePassion
   #  - year
   #  - runtime
   #  - plot
-  #  - images => TODO
+  #  - images
   #  - ratings
-  # * Quota
-  #  - authorize
-  #  - use
-  #  - reset_date
-  def ScrapAnalyse()
-    @result = {}
-    @line = ""
-    @result['status'] = 0
-    @movie_info = {}
-    @result_nb = 0
-    @quota = {}
+  def ScrapAnalyseOneMovie(oneMovieXML)
+    movie_info = {}
+  
+    movie_info['id'] = oneMovieXML.elements['id'].text
+    movie_info['id_allocine'] = oneMovieXML.elements['id_allocine'].text
+    movie_info['id_imdb'] = oneMovieXML.elements['id_imdb'].text
+    movie_info['last_change'] = oneMovieXML.elements['last_change'].text
+    movie_info['url'] = oneMovieXML.elements['url'].text
+    movie_info['title'] = oneMovieXML.elements['title'].text
+    movie_info['originaltitle'] = oneMovieXML.elements['originaltitle'].text
+    movie_info['year'] = oneMovieXML.elements['year'].text
+    movie_info['runtime'] = oneMovieXML.elements['runtime'].text
+    movie_info['plot'] = oneMovieXML.elements['plot'].text
 
-    doc = Document.new(@xml_data)
-    root = doc.root
-
-    root.each_element('movie') { |element|
-      @line += "#{element.elements['title'].text} (#{element.elements['year'].text})\n"
-      @result_nb+=1
-    }
-
-    if @result_nb == 0
-      @status = 0
-    elsif @result_nb == 1
-      @status = 1
-    elsif @result_nb > 1
-      @status = 2
-    end
-
-    if @status == 1
-      @movie_info['id'] = root.elements['movie'].elements['id'].text
-      @movie_info['id_allocine'] = root.elements['movie'].elements['id_allocine'].text
-      @movie_info['id_imdb'] = root.elements['movie'].elements['id_imdb'].text
-      @movie_info['last_change'] = root.elements['movie'].elements['last_change'].text
-      @movie_info['url'] = root.elements['movie'].elements['url'].text
-      @movie_info['title'] = root.elements['movie'].elements['title'].text
-      @movie_info['originaltitle'] = root.elements['movie'].elements['originaltitle'].text
-      @movie_info['year'] = root.elements['movie'].elements['year'].text
-      @movie_info['runtime'] = root.elements['movie'].elements['runtime'].text
-      @movie_info['plot'] = root.elements['movie'].elements['plot'].text
-      @movie_info['images'] = []
-
-      @movie_info['ratings'] = {}
-      @movie_info['ratings']['cinepassion'] = {}
-      @movie_info['ratings']['allocine'] = {}
-      @movie_info['ratings']['imdb'] = {}
-      ratings = root.elements['movie'].elements["ratings"]
-      ratings_cinepassion = ratings.elements["rating[@type='cinepassion']"]
-      @movie_info['ratings']['cinepassion']['votes'] = ratings_cinepassion.attributes['votes']
-      @movie_info['ratings']['cinepassion']['value'] = ratings_cinepassion.text
-      ratings_allocine = ratings.elements["rating[@type='allocine']"]
-      @movie_info['ratings']['allocine']['votes'] = ratings_allocine.attributes['votes']
-      @movie_info['ratings']['allocine']['value'] = ratings_allocine.text
-      ratings_imdb = ratings.elements["rating[@type='imdb']"]
-      @movie_info['ratings']['imdb']['votes'] = ratings_imdb.attributes['votes']
-      @movie_info['ratings']['imdb']['value'] = ratings_imdb.text
-
-      images = root.elements['movie'].elements["images"]
-      @movie_info['images'] = {}
-      images.each { |image|
-         #puts "*" * 25
-
+    movie_info['images'] = {}
+    images = oneMovieXML.elements["images"]
+    if not images.nil?
+      images.each_element("image") do |image|
          img_id = image.attributes['id']
          img_size = image.attributes['size']
 
-         if not @movie_info['images'].has_key? img_id
-            @movie_info['images'][img_id] = {}
+         if not movie_info['images'].has_key? img_id
+            movie_info['images'][img_id] = {}
          end
 
-         @movie_info['images'][img_id]['type'] = image.attributes['type']
-         if not @movie_info['images'][img_id].has_key? img_size
-            @movie_info['images'][img_id][img_size] = {}
+         movie_info['images'][img_id]['type'] = image.attributes['type']
+         if not movie_info['images'][img_id].has_key? img_size
+            movie_info['images'][img_id][img_size] = {}
          end
-         @movie_info['images'][img_id][img_size]['url']    = image.attributes['url']
-         @movie_info['images'][img_id][img_size]['width']  = image.attributes['width']
-         @movie_info['images'][img_id][img_size]['height'] = image.attributes['height']
-      }
+         movie_info['images'][img_id][img_size]['url']    = image.attributes['url']
+         movie_info['images'][img_id][img_size]['width']  = image.attributes['width']
+         movie_info['images'][img_id][img_size]['height'] = image.attributes['height']
+      end
     end
+        
+    movie_info['ratings'] = {}
+    movie_info['ratings']['cinepassion'] = {}
+    movie_info['ratings']['allocine'] = {}
+    movie_info['ratings']['imdb'] = {}
+    ratings = oneMovieXML.elements["ratings"]
+    ratings_cinepassion = ratings.elements["rating[@type='cinepassion']"]
+    movie_info['ratings']['cinepassion']['votes'] = ratings_cinepassion.attributes['votes']
+    movie_info['ratings']['cinepassion']['value'] = ratings_cinepassion.text
+    ratings_allocine = ratings.elements["rating[@type='allocine']"]
+    movie_info['ratings']['allocine']['votes'] = ratings_allocine.attributes['votes']
+    movie_info['ratings']['allocine']['value'] = ratings_allocine.text
+    ratings_imdb = ratings.elements["rating[@type='imdb']"]
+    movie_info['ratings']['imdb']['votes'] = ratings_imdb.attributes['votes']
+    movie_info['ratings']['imdb']['value'] = ratings_imdb.text
 
-    if @status > 0
-       @quota['authorize'] = root.elements['quota'].attributes['authorize']
-       @quota['use'] =  root.elements['quota'].attributes['use']
-       @quota['reset_date'] =  root.elements['quota'].attributes['reset_date']
-    end
-
-    @result['quota'] = @quota
-    @result['result_nb'] = @result_nb
-    @result['line'] = @line
-    @result['xml'] = doc.root
-    @result['status'] = @status
-    @result['movie_info'] = @movie_info
-
-    return @result
+    return movie_info
   end
 
+  
   # Scrap get a filename with garbage information & clean it
   def Scrap(search)
     short_name = search.gsub(/\./, ' ')
