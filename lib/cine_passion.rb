@@ -32,6 +32,14 @@ rescue LoadError => load_error
    puts '*'*50
 end
 
+if not (defined? SITEURL || (not SITEURL.nil?))
+   raise 'Need to define SITEURL'
+end
+
+if not (defined? APIKEY || (not APIKEY.nil?))
+   raise 'Need to define APIKEY'
+end
+
 class CinePassion
   attr_reader :xml_data, :movie_info, :result_nb, :status, :quota
 
@@ -144,6 +152,27 @@ class CinePassion
       ratings_imdb = ratings.elements["rating[@type='imdb']"]
       @movie_info['ratings']['imdb']['votes'] = ratings_imdb.attributes['votes']
       @movie_info['ratings']['imdb']['value'] = ratings_imdb.text
+
+      images = root.elements['movie'].elements["images"]
+      @movie_info['images'] = {}
+      images.each { |image|
+         #puts "*" * 25
+
+         img_id = image.attributes['id']
+         img_size = image.attributes['size']
+
+         if not @movie_info['images'].has_key? img_id
+            @movie_info['images'][img_id] = {}
+         end
+
+         @movie_info['images'][img_id]['type'] = image.attributes['type']
+         if not @movie_info['images'][img_id].has_key? img_size
+            @movie_info['images'][img_id][img_size] = {}
+         end
+         @movie_info['images'][img_id][img_size]['url']    = image.attributes['url']
+         @movie_info['images'][img_id][img_size]['width']  = image.attributes['width']
+         @movie_info['images'][img_id][img_size]['height'] = image.attributes['height']
+      }
     end
 
     if @status > 0
