@@ -4,9 +4,15 @@
 
   * Yes!
 
-
 === 0.6.0 / 2010-08-27
 
 * Have demo mode
 
   * If you have'nt configure package, you are in a demo mode
+
+=== 0.7.0 / 2010-08-30
+
+* Extract all movies from XML
+
+  * Extract all movies from XML
+  * Movie can have'nt pictures
