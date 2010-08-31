@@ -64,28 +64,33 @@ class TestCinePassion < Test::Unit::TestCase
     assert_equal(@test.movies_info[0]['year'], "2009")
     assert_equal(@test.movies_info[0]['runtime'], "90")
     assert_equal(@test.movies_info[0]['plot'], "Bob Wilton, un journaliste désespéré fait l'heureuse rencontre de Lyn Cassady, un soldat aux pouvoirs paranormaux combattant le terrorisme. Ils se rendent ensemble en Irak ou ils rencontrent Bill Django, le fondateur de l'unité, et Larry Hooper, soldat de l'unité qui dirige une prison.")
-
+    
     assert_equal(@test.movies_info[0]['images']['311335']['type'], "Poster")
     assert_equal(@test.movies_info[0]['images']['311335']['original']['height'], "2716")
     assert_equal(@test.movies_info[0]['images']['311335']['original']['width'], "2000")
     assert_equal(@test.movies_info[0]['images']['311335']['original']['url'], "http://passion-xbmc.org/scraper/Gallery/main/Poster_LesChvresduPentagone-311335.jpg")
     assert_equal(@test.movies_info[0]['images']['311335']['preview']['url'], "http://passion-xbmc.org/scraper/Gallery/preview/Poster_LesChvresduPentagone-311335.jpg")
     assert_equal(@test.movies_info[0]['images']['311335']['thumb']['url'], "http://passion-xbmc.org/scraper/Gallery/thumb/Poster_LesChvresduPentagone-311335.jpg")
-
+    
     assert_equal(@test.movies_info[0]['images']['316672']['type'], "Fanart")
     assert_equal(@test.movies_info[0]['images']['316672']['original']['height'], "1080")
     assert_equal(@test.movies_info[0]['images']['316672']['original']['width'], "1920")
     assert_equal(@test.movies_info[0]['images']['316672']['original']['url'], "http://passion-xbmc.org/scraper/Gallery/main/Fanart_LesChvresduPentagone-316672.jpg")
     assert_equal(@test.movies_info[0]['images']['316672']['preview']['url'], "http://passion-xbmc.org/scraper/Gallery/preview/Fanart_LesChvresduPentagone-316672.jpg")
     assert_equal(@test.movies_info[0]['images']['316672']['thumb']['url'], "http://passion-xbmc.org/scraper/Gallery/thumb/Fanart_LesChvresduPentagone-316672.jpg")
-
+    
     assert_equal(@test.movies_info[0]['ratings']['cinepassion']['votes'], "1")
     assert_equal(@test.movies_info[0]['ratings']['cinepassion']['value'], "7")
     assert_equal(@test.movies_info[0]['ratings']['allocine']['votes'], "1603")
     assert_equal(@test.movies_info[0]['ratings']['allocine']['value'], "2,5")
     assert_equal(@test.movies_info[0]['ratings']['imdb']['votes'], "30695")
     assert_equal(@test.movies_info[0]['ratings']['imdb']['value'], "6,4")
-
+    
+    assert_equal(@test.movies_info[0]['nfo']['Babylon']['fr'], "http://scraper-cine-passion-demo.ledez.net/scraper/index.php?id=136356&Download=1&Version=0&Lang=fr&OK=1")
+    assert_equal(@test.movies_info[0]['nfo']['Babylon']['en'], "http://scraper-cine-passion-demo.ledez.net/scraper/index.php?id=136356&Download=1&Version=0&Lang=en&OK=1") 
+    assert_equal(@test.movies_info[0]['nfo']['Camelot']['fr'], "http://scraper-cine-passion-demo.ledez.net/scraper/index.php?id=136356&Download=1&Version=1&Lang=fr&OK=1")
+    assert_equal(@test.movies_info[0]['nfo']['Camelot']['en'], "http://scraper-cine-passion-demo.ledez.net/scraper/index.php?id=136356&Download=1&Version=1&Lang=en&OK=1")
+    
     # Quota extraction
     assert_equal(@test.quota['authorize'], "300")
     assert_equal(@test.quota['use'], "1")

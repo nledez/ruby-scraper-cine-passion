@@ -23,7 +23,7 @@ rescue LoadError => load_error
    # Define default variables
    SITEURL="http://scraper-cine-passion-demo.ledez.net"
    APIKEY="fake-7945cb-fake"
-
+   
    puts '*'*50
    puts File.join(File.dirname(__FILE__), 'cine_passion_config.rb') + " is missing"
    puts " Please see README to create it"
@@ -43,20 +43,20 @@ end
 
 class CinePassion
   attr_reader :xml_data, :movies_info, :result_nb, :status, :quota
-
+  
   VERSION = '0.7.0'
-
+  
   # This class does not require parameters
   # First action is reset object
   def initialize
      self.DataReset()
   end
-
+  
   # Reset object (With empty XML xml_data)
   def DataReset()
     @xml_data = ""
   end
-
+  
   # Load XML data from online Cine Passion Scraper
   # Put movie name in parameter
   def DataLoadFromSite(search)
@@ -68,30 +68,30 @@ class CinePassion
         proxy_user,proxy_password = uri.userinfo.split(/:/) if uri.userinfo
     end
     conn = Net::HTTP::Proxy(proxy_host,proxy_port, proxy_user, proxy_password)
-   
+    
     query="Title" #|IMDB"
     lang="fr" # / en"
     format="XML"
     api_url="#{SITEURL}/scraper/API/1/Movie.Search/#{query}/#{lang}/#{format}/#{APIKEY}/#{search}"
-
+    
     url = URI.parse(URI.escape(api_url))
         res = conn.start(url.host, url.port) {|http|
         http.get(url.path)
     }
-
+    
     @xml_data = res.body
     self.ScrapAnalyse()
   end
-
+  
   # Load XML data from file
   # Put filename with full path in parameter
   def DataLoadFromFile(filename)
     file = File.new(filename)
-
+    
     @xml_data = file
     self.ScrapAnalyse()
   end
-
+  
   # Explore XML data to extract informations
   # At this time the class get there informations:
   # * Movie -> See ScrapAnalyseOneMovie function
@@ -106,16 +106,16 @@ class CinePassion
     @result_nb = 0
     @quota = {}
     @movies_info = []
-
+    
     doc = Document.new(@xml_data)
     root = doc.root
-
+    
     @movies_info = []
     root.each_element('movie') do |movie|
       @movies_info.push ScrapAnalyseOneMovie(movie)
     end
     @result_nb = @movies_info.count()
-
+    
     if @result_nb == 0
       @status = 0
     elsif @result_nb == 1
@@ -130,17 +130,17 @@ class CinePassion
        @quota['use']        = quota.attributes['use']
        @quota['reset_date'] = quota.attributes['reset_date']
     end
-
+    
     @result['quota'] = @quota
     @result['result_nb'] = @result_nb
     @result['line'] = @line
     @result['xml'] = doc.root
     @result['status'] = @status
     @result['movies_info'] = @movies_info
-
+    
     return @result
   end
-
+  
   # * Movie
   #  - id
   #  - id_allocine
@@ -156,7 +156,7 @@ class CinePassion
   #  - ratings
   def ScrapAnalyseOneMovie(oneMovieXML)
     movie_info = {}
-  
+    
     movie_info['id'] = oneMovieXML.elements['id'].text
     movie_info['id_allocine'] = oneMovieXML.elements['id_allocine'].text
     movie_info['id_imdb'] = oneMovieXML.elements['id_imdb'].text
@@ -167,18 +167,18 @@ class CinePassion
     movie_info['year'] = oneMovieXML.elements['year'].text
     movie_info['runtime'] = oneMovieXML.elements['runtime'].text
     movie_info['plot'] = oneMovieXML.elements['plot'].text
-
+    
     movie_info['images'] = {}
     images = oneMovieXML.elements["images"]
     if not images.nil?
       images.each_element("image") do |image|
          img_id = image.attributes['id']
          img_size = image.attributes['size']
-
+         
          if not movie_info['images'].has_key? img_id
             movie_info['images'][img_id] = {}
          end
-
+         
          movie_info['images'][img_id]['type'] = image.attributes['type']
          if not movie_info['images'][img_id].has_key? img_size
             movie_info['images'][img_id][img_size] = {}
@@ -188,7 +188,7 @@ class CinePassion
          movie_info['images'][img_id][img_size]['height'] = image.attributes['height']
       end
     end
-        
+    
     movie_info['ratings'] = {}
     movie_info['ratings']['cinepassion'] = {}
     movie_info['ratings']['allocine'] = {}
@@ -203,10 +203,21 @@ class CinePassion
     ratings_imdb = ratings.elements["rating[@type='imdb']"]
     movie_info['ratings']['imdb']['votes'] = ratings_imdb.attributes['votes']
     movie_info['ratings']['imdb']['value'] = ratings_imdb.text
-
+    
+    nfo_base = "#{SITEURL}/scraper/index.php?id=#{movie_info['id']}&Download=1"
+    movie_info['nfo'] = {}
+    movie_info['nfo']['Babylon'] = {}
+    movie_info['nfo']['Camelot'] = {}
+    nfo_babylon = "#{nfo_base}&Version=0"
+    movie_info['nfo']['Babylon']['fr'] = "#{nfo_babylon}&Lang=fr&OK=1"
+    movie_info['nfo']['Babylon']['en'] = "#{nfo_babylon}&Lang=en&OK=1"
+    nfo_camelot = "#{nfo_base}&Version=1"
+    movie_info['nfo']['Camelot']['fr'] = "#{nfo_camelot}&Lang=fr&OK=1"
+    movie_info['nfo']['Camelot']['en'] = "#{nfo_camelot}&Lang=en&OK=1"
+    
     return movie_info
   end
-
+  
   
   # Scrap get a filename with garbage information & clean it
   def Scrap(search)
