@@ -5,51 +5,51 @@ require 'cine_passion'
 # Suite tests of CinePassion scraper binding
 # Many tests can be launch offline
 class TestCinePassion < Test::Unit::TestCase
-
+  
   # Test creation of object with right class
   def test_create_object
     @test = CinePassion.new
     assert_not_nil(@test)
     assert_instance_of(CinePassion, @test)
   end
-
+  
   # Test ability to load data from xml & reset data
   def test_data_load_and_reset
     @test = CinePassion.new
     assert_equal(@test.xml_data, "")
-
+    
     @test.DataLoadFromFile("test/data/cinepassion-scraper-test-01-one-response.xml")
     assert_not_equal(@test.xml_data, "")
-
+    
     @test.DataReset()
     assert_equal(@test.xml_data, "")
   end
-
+  
   # Test ability to load data from network
   def test_data_load_from_network
     @test = CinePassion.new
-
+    
     @test.DataLoadFromSite("Home")
     assert_not_equal(@test.xml_data, "")
   end
-
+  
   # Test if scrap working
   def test_scrap_load_data
     @test = CinePassion.new
-
+    
     @test.Scrap("Home")
     assert_not_equal(@test.xml_data, "")
   end
-
+  
   # Test if datas was properly extracted
   def test_xml_load_data
     @test = CinePassion.new
-
+    
     # Test no response
     @test.DataLoadFromFile("test/data/cinepassion-scraper-test-00-no-response.xml")
     assert_not_equal(@test.xml_data, "")
     assert_equal(@test.result_nb, 0)
-
+    
     # Extract all data in one result
     @test.DataLoadFromFile("test/data/cinepassion-scraper-test-01-one-response.xml")
     assert_not_equal(@test.xml_data, "")
@@ -101,7 +101,7 @@ class TestCinePassion < Test::Unit::TestCase
   def test_xml_load_data_multiple_movies
     @test = CinePassion.new
     @test.DataLoadFromFile("test/data/cinepassion-scraper-test-02-mutiple-response.xml")
-
+    
     # Quota extraction
     assert_not_equal(@test.xml_data, "")
     
@@ -111,7 +111,7 @@ class TestCinePassion < Test::Unit::TestCase
     assert_equal(@test.movies_info[0]['id_allocine'], "128179")
     assert_equal(@test.movies_info[0]['id_imdb'], "1014762")
     assert_equal(@test.movies_info[0]['last_change'], "1279466610")
-
+    
     assert_equal(@test.movies_info[1]['id'], "125081")
     assert_equal(@test.movies_info[1]['id_allocine'], "125081")
     assert_equal(@test.movies_info[1]['id_imdb'], "822388")

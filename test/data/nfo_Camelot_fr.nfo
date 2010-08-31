@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<movie xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <title>Les Chèvres du Pentagone</title>
+    <originaltitle>The Men Who Stare at Goats</originaltitle>
+    <id>1234548</id>
+    <year>2009</year>
+    <director>Grant Heslov</director>
+    <tagline>(...) un casting de rêve pour une comédie dont l'insolence revigorante et l'absurdité assumée rappellent le récent Burn after reading des frères Coen. Jubilatoire!</tagline>
+    <runtime>01h30min</runtime>
+    <studio>Sony Pictures Releasing</studio>
+    <credits>Peter Straughan</credits>
+    <rating>1.8</rating>
+    <votes>1603</votes>
+    <mpaa>Couleur  / Format de projection : 2.35 : 1 Cinemascope / Format de production : 35 mm</mpaa>
+	<country>américain</country>
+    <genre>Comédie</genre>
+    
+    <actor>
+        <name>J.K. Simmons</name>
+        <role>le général Putkin</role>
+        <thumb>http://passion-xbmc.org/scraper/Gallery/main/JKSimmons-32423.jpg</thumb>
+    </actor>
+    
+    <actor>
+        <name>Tim Griffin</name>
+        <role>Tim Kootz</role>
+        <thumb>http://passion-xbmc.org/scraper/Images/Actor_Unknow.png</thumb>
+    </actor>
+    
+    <actor>
+        <name>Nick Offerman</name>
+        <role>Scotty Mercer</role>
+        <thumb>http://passion-xbmc.org/scraper/Images/Actor_Unknow.png</thumb>
+    </actor>
+    
+    <actor>
+        <name>Stephen Lang</name>
+        <role>le général Hopgood</role>
+        <thumb>http://passion-xbmc.org/scraper/Gallery/main/StephenLang-50691.jpg</thumb>
+    </actor>
+    
+    <actor>
+        <name>Kevin Spacey</name>
+        <role>Larry Hooper</role>
+        <thumb>http://passion-xbmc.org/scraper/Gallery/main/KevinSpacey-32271.jpg</thumb>
+    </actor>
+    
+    <actor>
+        <name>Jeff Bridges</name>
+        <role>Bill Django</role>
+        <thumb>http://passion-xbmc.org/scraper/Gallery/main/JeffBridges-31026.jpg</thumb>
+    </actor>
+    
+    <actor>
+        <name>Ewan McGregor</name>
+        <role>Bob Wilton</role>
+        <thumb>http://passion-xbmc.org/scraper/Gallery/main/EwanMcGregor-31599.jpg</thumb>
+    </actor>
+    
+    <actor>
+        <name>Robert Patrick</name>
+        <role>Todd Nixon</role>
+        <thumb>http://passion-xbmc.org/scraper/Gallery/main/RobertPatrick-31401.jpg</thumb>
+    </actor>
+    
+    <actor>
+        <name>Stephen Root</name>
+        <role>Gus Lacey</role>
+        <thumb>http://passion-xbmc.org/scraper/Images/Actor_Unknow.png</thumb>
+    </actor>
+    
+    
+        <thumb>http://passion-xbmc.org/scraper/Gallery/main/Poster_LesChvresduPentagone-311335.jpg</thumb>
+        <thumb>http://passion-xbmc.org/scraper/Gallery/main/Poster_LesChvresduPentagone-316688.jpg</thumb>
+        <thumb>http://passion-xbmc.org/scraper/Gallery/main/Poster_LesChvresduPentagone-316689.jpg</thumb>
+        <thumb>http://passion-xbmc.org/scraper/Gallery/main/Poster_LesChvresduPentagone-316690.jpg</thumb>
+        <thumb>http://passion-xbmc.org/scraper/Gallery/main/Poster_LesChvresduPentagone-316691.jpg</thumb>
+        <thumb>http://passion-xbmc.org/scraper/Gallery/main/Poster_LesChvresduPentagone-316692.jpg</thumb>
+        <thumb>http://passion-xbmc.org/scraper/Gallery/main/Poster_LesChvresduPentagone-316693.jpg</thumb>
+        <thumb>http://passion-xbmc.org/scraper/Gallery/main/Poster_LesChvresduPentagone-286084.peg</thumb>
+    
+    
+    
+    <fanart>
+        <thumb>http://passion-xbmc.org/scraper/Gallery/main/Fanart_LesChvresduPentagone-311338.jpg</thumb>
+        <thumb>http://passion-xbmc.org/scraper/Gallery/main/Fanart_LesChvresduPentagone-316668.jpg</thumb>
+        <thumb>http://passion-xbmc.org/scraper/Gallery/main/Fanart_LesChvresduPentagone-316671.jpg</thumb>
+        <thumb>http://passion-xbmc.org/scraper/Gallery/main/Fanart_LesChvresduPentagone-311339.jpg</thumb>
+        <thumb>http://passion-xbmc.org/scraper/Gallery/main/Fanart_LesChvresduPentagone-311334.jpg</thumb>
+        <thumb>http://passion-xbmc.org/scraper/Gallery/main/Fanart_LesChvresduPentagone-316670.jpg</thumb>
+        <thumb>http://passion-xbmc.org/scraper/Gallery/main/Fanart_LesChvresduPentagone-311340.jpg</thumb>
+        <thumb>http://passion-xbmc.org/scraper/Gallery/main/Fanart_LesChvresduPentagone-311336.jpg</thumb>
+        <thumb>http://passion-xbmc.org/scraper/Gallery/main/Fanart_LesChvresduPentagone-286085.peg</thumb>
+        <thumb>http://passion-xbmc.org/scraper/Gallery/main/Fanart_LesChvresduPentagone-311337.jpg</thumb>
+        <thumb>http://passion-xbmc.org/scraper/Gallery/main/Fanart_LesChvresduPentagone-316669.jpg</thumb>
+        <thumb>http://passion-xbmc.org/scraper/Gallery/main/Fanart_LesChvresduPentagone-316672.jpg</thumb>
+        <thumb>http://passion-xbmc.org/scraper/Gallery/main/Fanart_LesChvresduPentagone-316682.jpg</thumb>
+        <thumb>http://passion-xbmc.org/scraper/Gallery/main/Fanart_LesChvresduPentagone-316675.jpg</thumb>
+        <thumb>http://passion-xbmc.org/scraper/Gallery/main/Fanart_LesChvresduPentagone-316674.jpg</thumb>
+        <thumb>http://passion-xbmc.org/scraper/Gallery/main/Fanart_LesChvresduPentagone-316673.jpg</thumb>
+        <thumb>http://passion-xbmc.org/scraper/Gallery/main/Fanart_LesChvresduPentagone-316687.jpg</thumb>
+        <thumb>http://passion-xbmc.org/scraper/Gallery/main/Fanart_LesChvresduPentagone-316684.jpg</thumb>
+        <thumb>http://passion-xbmc.org/scraper/Gallery/main/Fanart_LesChvresduPentagone-316685.jpg</thumb>
+        <thumb>http://passion-xbmc.org/scraper/Gallery/main/Fanart_LesChvresduPentagone-316686.jpg</thumb>
+    
+    </fanart>
+    
+    <trailer>http://hd.fr.mediaplayer.allocine.fr/nmedia/18/73/11/43/18937641_fa2_vost_hd.flv</trailer>
+    <outline>Bob Wilton, un journaliste désespéré fait l'heureuse rencontre de Lyn Cassady, un soldat aux pouvoirs paranormaux combattant le terrorisme. Ils se rendent ensemble en Irak ou ils rencontrent Bill Django, le fondateur de l'unité, et Larry Hooper, soldat de l'unité qui dirige une prison.</outline>
+    <plot>Bob Wilton, un journaliste désespéré fait l'heureuse rencontre de Lyn Cassady, un soldat aux pouvoirs paranormaux combattant le terrorisme. Ils se rendent ensemble en Irak ou ils rencontrent Bill Django, le fondateur de l'unité, et Larry Hooper, soldat de l'unité qui dirige une prison.</plot>
+</movie>
