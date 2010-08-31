@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # This class can be used to extract data from Cine Passion scraper
 #
 # = API Key
