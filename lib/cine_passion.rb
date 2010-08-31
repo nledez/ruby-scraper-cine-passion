@@ -59,13 +59,24 @@ class CinePassion
   # Load XML data from online Cine Passion Scraper
   # Put movie name in parameter
   def DataLoadFromSite(search)
+    proxy_host = proxy_port = proxy_user = proxy_password = ""
+    if (ENV['http_proxy'])
+        uri=URI.parse(ENV['http_proxy'])
+        proxy_host = uri.host
+        proxy_port = uri.port
+        proxy_user,proxy_password = uri.userinfo.split(/:/) if uri.userinfo
+        conn = Net::HTTP::Proxy(proxy_host,proxy_port, proxy_user, proxy_password)
+    else
+        conn = Net::HTTP
+    end
+   
     query="Title" #|IMDB"
     lang="fr" # / en"
     format="XML"
     api_url="#{SITEURL}/scraper/API/1/Movie.Search/#{query}/#{lang}/#{format}/#{APIKEY}/#{search}"
 
     url = URI.parse(URI.escape(api_url))
-        res = Net::HTTP.start(url.host, url.port) {|http|
+        res = conn.start(url.host, url.port) {|http|
         http.get(url.path)
     }
 
