@@ -17,38 +17,39 @@ require 'net/http'
 require 'rexml/document'
 include REXML
 
-begin
-   require 'cine_passion_config'
-rescue LoadError => load_error
-   # Define default variables
-   SITEURL="http://scraper-cine-passion-demo.ledez.net"
-   APIKEY="fake-7945cb-fake"
-   
-   puts '*'*50
-   puts File.join(File.dirname(__FILE__), 'cine_passion_config.rb') + " is missing"
-   puts " Please see README to create it"
-   puts "currently I use theres values :"
-   puts "SITEURL: #{SITEURL}"
-   puts "APIKEY; #{APIKEY}"
-   puts '*'*50
-end
-
-if not (defined? SITEURL || (not SITEURL.nil?))
-   raise 'Need to define SITEURL'
-end
-
-if not (defined? APIKEY || (not APIKEY.nil?))
-   raise 'Need to define APIKEY'
-end
-
 class CinePassion
-  attr_reader :xml_data, :movies_info, :result_nb, :status, :quota
+  attr_reader :xml_data, :movies_info, :result_nb, :status, :quota, :apikey, :siteurl, :proxyinfo
   
   VERSION = '0.7.0'
   
   # This class does not require parameters
   # First action is reset object
-  def initialize
+  def initialize(apikey=nil, proxy=nil)
+     if apikey.nil?
+        @apikey = "fake-7945cb-fake"
+        @siteurl="http://scraper-cine-passion-demo.ledez.net"
+        puts '*'*50
+        puts "I need a apikey to get real values"
+        puts " Please see README to create it"
+        puts "currently I use theres values :"
+        puts "@siteurl: #{@siteurl}"
+        puts "@apikey; #{@apikey}"
+        puts '*'*50
+     else
+        @apikey = apikey
+        @siteurl="http://passion-xbmc.org"
+     end
+     
+     @proxy_host = @proxy_port = @proxy_user = @proxy_password = nil
+     if (ENV['http_proxy'] || proxy)
+         uri=URI.parse(ENV['http_proxy']) if proxy.nil?
+         uri=URI.parse(proxy) if ENV['http_proxy'].nil?
+         @proxy_host = uri.host
+         @proxy_port = uri.port
+         @proxy_user, @proxy_password = uri.userinfo.split(/:/) if uri.userinfo
+     end
+     @proxyinfo = [@proxy_host, @proxy_port, @proxy_user, @proxy_password]
+     
      self.DataReset()
   end
   
@@ -60,19 +61,12 @@ class CinePassion
   # Load XML data from online Cine Passion Scraper
   # Put movie name in parameter
   def DataLoadFromSite(search)
-    proxy_host = proxy_port = proxy_user = proxy_password = nil
-    if (ENV['http_proxy'])
-        uri=URI.parse(ENV['http_proxy'])
-        proxy_host = uri.host
-        proxy_port = uri.port
-        proxy_user,proxy_password = uri.userinfo.split(/:/) if uri.userinfo
-    end
-    conn = Net::HTTP::Proxy(proxy_host,proxy_port, proxy_user, proxy_password)
+    conn = Net::HTTP::Proxy(@proxy_host, @proxy_port, @proxy_user, @proxy_password)
     
     query="Title" #|IMDB"
     lang="fr" # / en"
     format="XML"
-    api_url="#{SITEURL}/scraper/API/1/Movie.Search/#{query}/#{lang}/#{format}/#{APIKEY}/#{search}"
+    api_url="#{@siteurl}/scraper/API/1/Movie.Search/#{query}/#{lang}/#{format}/#{@apikey}/#{search}"
     
     url = URI.parse(URI.escape(api_url))
         res = conn.start(url.host, url.port) {|http|
@@ -124,7 +118,7 @@ class CinePassion
       @status = 2
     end
     
-    quota = root.elements['quota']      
+    quota = root.elements['quota']
     if not quota.nil?
        @quota['authorize']  = quota.attributes['authorize']
        @quota['use']        = quota.attributes['use']
@@ -204,7 +198,7 @@ class CinePassion
     movie_info['ratings']['imdb']['votes'] = ratings_imdb.attributes['votes']
     movie_info['ratings']['imdb']['value'] = ratings_imdb.text
     
-    nfo_base = "#{SITEURL}/scraper/index.php?id=#{movie_info['id']}&Download=1"
+    nfo_base = "#{@siteurl}/scraper/index.php?id=#{movie_info['id']}&Download=1"
     movie_info['nfo'] = {}
     movie_info['nfo']['Babylon'] = {}
     movie_info['nfo']['Camelot'] = {}
@@ -217,7 +211,6 @@ class CinePassion
     
     return movie_info
   end
-  
   
   # Scrap get a filename with garbage information & clean it
   def Scrap(search)

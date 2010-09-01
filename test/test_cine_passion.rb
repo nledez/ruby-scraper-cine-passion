@@ -13,6 +13,24 @@ class TestCinePassion < Test::Unit::TestCase
     assert_instance_of(CinePassion, @test)
   end
   
+  # Test ability to define a apikey
+  def test_can_have_apikey
+    @test = CinePassion.new("test-api-key")
+    assert_equal(@test.apikey, "test-api-key")
+  end
+  
+  # Test ability to define a proxy
+  def test_can_have_apikey
+    @test1 = CinePassion.new("test-api-key")
+    assert_equal(@test1.proxyinfo, [nil, nil, nil, nil])
+    
+    @test2 = CinePassion.new("test-api-key", "http://127.0.0.1:3128/")
+    assert_equal(@test2.proxyinfo, ["127.0.0.1", 3128, nil, nil])
+    
+    @test3 = CinePassion.new("test-api-key", "http://user:pass@127.0.0.1:3128/")
+    assert_equal(@test3.proxyinfo, ["127.0.0.1", 3128, "user", "pass"])
+  end
+  
   # Test ability to load data from xml & reset data
   def test_data_load_and_reset
     @test = CinePassion.new
@@ -95,7 +113,7 @@ class TestCinePassion < Test::Unit::TestCase
     assert_equal(@test.quota['authorize'], "300")
     assert_equal(@test.quota['use'], "1")
     assert_equal(@test.quota['reset_date'], "2010-08-04 12:45:26")
-
+  
   end
   
   def test_xml_load_data_multiple_movies
