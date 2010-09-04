@@ -18,7 +18,7 @@ require 'rexml/document'
 include REXML
 
 class CinePassion
-  attr_reader :xml_data, :movies_info, :result_nb, :status, :quota, :apikey, :siteurl, :proxyinfo
+  attr_reader :xml_data, :movies_info, :result_nb, :status, :quota, :apikey, :siteurl, :proxyinfo, :lang
   
   VERSION = '0.7.0'
   
@@ -27,7 +27,7 @@ class CinePassion
   def initialize(apikey=nil, proxy=nil)
      if apikey.nil?
         @apikey = "fake-7945cb-fake"
-        @siteurl="http://scraper-cine-passion-demo.ledez.net"
+        defineOtherSiteURL("http://scraper-cine-passion-demo.ledez.net")
         puts '*'*50
         puts "I need a apikey to get real values"
         puts " Please see README to create it"
@@ -37,7 +37,7 @@ class CinePassion
         puts '*'*50
      else
         @apikey = apikey
-        @siteurl="http://passion-xbmc.org"
+        defineOtherSiteURL("http://passion-xbmc.org")
      end
      
      @proxy_host = @proxy_port = @proxy_user = @proxy_password = nil
@@ -50,7 +50,24 @@ class CinePassion
      end
      @proxyinfo = [@proxy_host, @proxy_port, @proxy_user, @proxy_password]
      
+     self.defineLanguage()
      self.DataReset()
+  end
+  
+  # Define other host to scrap
+  #  Default http://passion-xbmc.org
+  def defineOtherSiteURL(siteurl=nil)
+      if siteurl.nil?
+        @siteurl = "http://passion-xbmc.org"
+      else
+        @siteurl = siteurl
+      end
+  end
+  
+  # define a language to scrap
+  #  Default en
+  def defineLanguage(lang="en")
+    @lang = lang
   end
   
   # Reset object (With empty XML xml_data)
@@ -60,21 +77,38 @@ class CinePassion
   
   # Load XML data from online Cine Passion Scraper
   # Put movie name in parameter
-  def DataLoadFromSite(search)
+  def DataLoadFromSite(url)
     conn = Net::HTTP::Proxy(@proxy_host, @proxy_port, @proxy_user, @proxy_password)
     
-    query="Title" #|IMDB"
-    lang="fr" # / en"
-    format="XML"
-    api_url="#{@siteurl}/scraper/API/1/Movie.Search/#{query}/#{lang}/#{format}/#{@apikey}/#{search}"
-    
-    url = URI.parse(URI.escape(api_url))
-        res = conn.start(url.host, url.port) {|http|
-        http.get(url.path)
+    request = URI.parse(URI.escape(url))
+        res = conn.start(request.host, request.port) {|http|
+        http.get(request.path)
     }
     
     @xml_data = res.body
     self.ScrapAnalyse()
+  end
+  
+  # Generate URL For Movie.Search
+  def GenerateURLMovieSearch(search, query="Title", format="XML")
+    "#{@siteurl}/scraper/API/1/Movie.Search/#{query}/#{@lang}/#{format}/#{@apikey}/#{search}"
+  end
+  
+  # Generate URL For Movie.GetInfo
+  def GenerateURLMovieGetInfo(search, query="Title", format="XML")
+    "#{@siteurl}/scraper/API/1/Movie.GetInfo/#{query}/#{@lang}/#{format}/#{@apikey}/#{search}"
+  end
+  
+  # Execute a MovieSearch on scraper
+  def MovieSearch(search)
+    DataLoadFromSite(GenerateURLMovieSearch(search))
+    @xml_data
+  end
+  
+  # Execute a MovieGetInfo on scraper
+  def MovieGetInfo(search)
+    DataLoadFromSite(GenerateURLMovieSearch(search))
+    @xml_data
   end
   
   # Load XML data from file
@@ -88,7 +122,7 @@ class CinePassion
   
   # Explore XML data to extract informations
   # At this time the class get there informations:
-  # * Movie -> See ScrapAnalyseOneMovie function
+  # * Movie -> See ScrapAnalyseOneMovieElement function
   # * Quota
   #  - authorize
   #  - use
@@ -106,7 +140,7 @@ class CinePassion
     
     @movies_info = []
     root.each_element('movie') do |movie|
-      @movies_info.push ScrapAnalyseOneMovie(movie)
+      @movies_info.push ScrapAnalyseOneMovieElement(movie)
     end
     @result_nb = @movies_info.count()
     
@@ -148,7 +182,7 @@ class CinePassion
   #  - plot
   #  - images
   #  - ratings
-  def ScrapAnalyseOneMovie(oneMovieXML)
+  def ScrapAnalyseOneMovieElement(oneMovieXML)
     movie_info = {}
     
     movie_info['id'] = oneMovieXML.elements['id'].text
@@ -213,10 +247,10 @@ class CinePassion
   end
   
   # Scrap get a filename with garbage information & clean it
-  def Scrap(search)
+  def CleanMovieName(search)
     short_name = search.gsub(/\./, ' ')
     short_name.gsub!(/ (DVDRip|LiMiTED|REPACK|720p|FRENCH|UNRATED|iNTERNAL|TRUEFRENCH).*$/, '')
     
-    DataLoadFromSite(short_name)
+    short_name
   end
 end

@@ -15,8 +15,37 @@ class TestCinePassion < Test::Unit::TestCase
   
   # Test ability to define a apikey
   def test_can_have_apikey
-    @test = CinePassion.new("test-api-key")
-    assert_equal(@test.apikey, "test-api-key")
+    @test1 = CinePassion.new()
+    assert_equal(@test1.apikey, "test-api-key")
+    @test2 = CinePassion.new("fake-7945cb-fake")
+    assert_equal(@test2.apikey, "test-api-key")
+  end
+  
+  # Test ability to define a server
+  def test_can_change_siteurl
+    @test1 = CinePassion.new()
+    assert_equal(@test1.siteurl, "http://scraper-cine-passion-demo.ledez.net")
+    @test2 = CinePassion.new("a-key")
+    assert_equal(@test2.siteurl, "http://passion-xbmc.org")
+    @test2.defineOtherSiteURL("http://localhost:4567")
+    assert_equal(@test2.siteurl, "http://localhost:4567")
+    @test2.defineOtherSiteURL()
+    assert_equal(@test2.siteurl, "http://passion-xbmc.org")
+  end
+  
+  # Test GenerateURLMovieSearch & GenerateURLMovieGetInfo
+  def test_generate_url
+    @test1 = CinePassion.new()
+    assert_equal(@test1.GenerateURLMovieSearch("toto"), "http://scraper-cine-passion-demo.ledez.net/scraper/API/1/Movie.Search/Title/en/XML/fake-7945cb-fake/toto")
+    assert_equal(@test1.GenerateURLMovieGetInfo("toto"), "http://scraper-cine-passion-demo.ledez.net/scraper/API/1/Movie.GetInfo/Title/en/XML/fake-7945cb-fake/toto")
+  end
+  
+  # Test ability to define a language for requests
+  def test_can_change_language
+    @test1 = CinePassion.new()
+    assert_equal(@test1.lang, "en")
+    @test1.defineLanguage("fr")
+    assert_equal(@test1.lang, "fr")
   end
   
   # Test ability to define a proxy
@@ -47,16 +76,28 @@ class TestCinePassion < Test::Unit::TestCase
   def test_data_load_from_network
     @test = CinePassion.new
     
-    @test.DataLoadFromSite("Home")
+    @test.MovieSearch("Home")
+    assert_not_equal(@test.xml_data, "")
+    @test.DataReset()
+    
+    @test.MovieGetInfo("136356")
     assert_not_equal(@test.xml_data, "")
   end
   
   # Test if scrap working
-  def test_scrap_load_data
+  def test_clean_moviename_working
     @test = CinePassion.new
     
-    @test.Scrap("Home")
-    assert_not_equal(@test.xml_data, "")
+    assert_equal(@test.CleanMovieName("Home.DVDRip"), "Home")
+    assert_equal(@test.CleanMovieName("Home.LiMiTED"), "Home")
+    assert_equal(@test.CleanMovieName("Home.REPACK"), "Home")
+    assert_equal(@test.CleanMovieName("Home.720p"), "Home")
+    assert_equal(@test.CleanMovieName("Home.FRENCH"), "Home")
+    assert_equal(@test.CleanMovieName("Home.UNRATED"), "Home")
+    assert_equal(@test.CleanMovieName("Home.iNTERNAL"), "Home")
+    assert_equal(@test.CleanMovieName("Home.TRUEFRENCH"), "Home")
+    assert_equal(@test.CleanMovieName("Home.DVDRip.LiMiTED.REPACK.720p.FRENCH.UNRATED.iNTERNAL.TRUEFRENCH"), "Home")
+    assert_equal(@test.CleanMovieName("Home.TRUEFRENCH.iNTERNAL.UNRATED.FRENCH.720p.REPACK.LiMiTED.DVDRip"), "Home")
   end
   
   # Test if datas was properly extracted
@@ -113,7 +154,6 @@ class TestCinePassion < Test::Unit::TestCase
     assert_equal(@test.quota['authorize'], "300")
     assert_equal(@test.quota['use'], "1")
     assert_equal(@test.quota['reset_date'], "2010-08-04 12:45:26")
-  
   end
   
   def test_xml_load_data_multiple_movies
