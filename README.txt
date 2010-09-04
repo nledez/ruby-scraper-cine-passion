@@ -22,7 +22,13 @@ http://passion-xbmc.org/scraper-cine-passion-support-francais/
 
 == SYNOPSIS:
 
-  FIX (code sample of usage)
+require 'cine_passion'
+@scrap = CinePassion.new("my-real-api-key")
+@scrap.MovieSearch("Home")
+#=> Return you a movies list 
+@scrap.movies_info
+#=> All info are here
+
 
 == REQUIREMENTS:
 
@@ -31,14 +37,11 @@ In my project, you can't find Cine Passion API Key.
 In fact you need a key your own side, you can request one here :
 http://passion-xbmc.org/demande-clef-api-api-key-request/
 
-See INSTALL
+See INSTALL & SYNOPSIS
 
 == INSTALL:
 
 * gem install cine-passion
-* cd /lib/to/gem/cine-passion
-* cp lib/cine_passion_config.rb.sample lib/cine_passion_config.rb
-* edit lib/cine_passion_config.rb # And replace APIKEY
 
 == DEVELOPERS:
 
