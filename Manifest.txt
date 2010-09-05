@@ -3,7 +3,6 @@ Manifest.txt
 README.txt
 Rakefile
 lib/cine_passion.rb
-lib/cine_passion_config.rb.sample
 test/test_cine_passion.rb
 test/data/cinepassion-scraper-test-00-no-response.xml
 test/data/cinepassion-scraper-test-01-one-response.xml

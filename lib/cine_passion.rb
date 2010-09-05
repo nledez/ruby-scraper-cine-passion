@@ -20,7 +20,7 @@ include REXML
 class CinePassion
   attr_reader :xml_data, :movies_info, :result_nb, :status, :quota, :apikey, :siteurl, :proxyinfo, :lang
   
-  VERSION = '0.7.0'
+  VERSION = '0.8.0'
   
   # This class does not require parameters
   # First action is reset object
