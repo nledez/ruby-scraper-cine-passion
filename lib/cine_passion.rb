@@ -20,7 +20,7 @@ include REXML
 class CinePassion
   attr_reader :xml_data, :movies_info, :result_nb, :status, :quota, :apikey, :siteurl, :proxyinfo, :lang
   
-  VERSION = '0.8.0'
+  VERSION = '0.9.0'
   
   # This class does not require parameters
   # First action is reset object
@@ -101,13 +101,13 @@ class CinePassion
   
   # Execute a MovieSearch on scraper
   def MovieSearch(search)
-    DataLoadFromSite(GenerateURLMovieSearch(search))
+    DataLoadFromSite(GenerateURLMovieSearch(search, query="Title", format="XML"))
     @xml_data
   end
   
   # Execute a MovieGetInfo on scraper
   def MovieGetInfo(search)
-    DataLoadFromSite(GenerateURLMovieSearch(search))
+    DataLoadFromSite(GenerateURLMovieSearch(search, query="Title", format="XML"))
     @xml_data
   end
   

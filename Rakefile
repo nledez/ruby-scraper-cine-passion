@@ -15,8 +15,7 @@ Hoe.spec 'cine-passion' do
 
   Thank you for installing cine-passion-#{CinePassion::VERSION}
 
-  Please be copy lib/lib/cine_passion_config.rb.sample to lib/cine_passion_config.rb
-  And replace APIKEY with your own.
+  Please request a APIKEY to make real requests.
 
   You can request one here :
   http://passion-xbmc.org/demande-clef-api-api-key-request/
