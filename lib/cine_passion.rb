@@ -20,7 +20,11 @@ include REXML
 class CinePassion
   attr_reader :xml_data, :movies_info, :result_nb, :status, :quota, :apikey, :siteurl, :proxyinfo, :lang
   
-  VERSION = '0.9.0'
+  VERSION = '0.10.0'
+
+  def version()
+     return VERSION
+  end
   
   # This class does not require parameters
   # First action is reset object
@@ -95,18 +99,18 @@ class CinePassion
   end
   
   # Generate URL For Movie.GetInfo
-  def GenerateURLMovieGetInfo(search, query="Title", format="XML")
+  def GenerateURLMovieGetInfo(search, query="ID", format="XML")
     "#{@siteurl}/scraper/API/1/Movie.GetInfo/#{query}/#{@lang}/#{format}/#{@apikey}/#{search}"
   end
   
   # Execute a MovieSearch on scraper
-  def MovieSearch(search)
+  def MovieSearch(search, query="Title", format="XML")
     DataLoadFromSite(GenerateURLMovieSearch(search, query="Title", format="XML"))
     @xml_data
   end
   
   # Execute a MovieGetInfo on scraper
-  def MovieGetInfo(search)
+  def MovieGetInfo(search, query="ID", format="XML")
     DataLoadFromSite(GenerateURLMovieSearch(search, query="Title", format="XML"))
     @xml_data
   end
@@ -136,7 +140,12 @@ class CinePassion
     @movies_info = []
     
     doc = Document.new(@xml_data)
-    root = doc.root
+    begin
+       doc.root.elements["movie"].has_elements?
+       root = doc.root
+    rescue
+       root = doc
+    end
     
     @movies_info = []
     root.each_element('movie') do |movie|
@@ -195,6 +204,71 @@ class CinePassion
     movie_info['year'] = oneMovieXML.elements['year'].text
     movie_info['runtime'] = oneMovieXML.elements['runtime'].text
     movie_info['plot'] = oneMovieXML.elements['plot'].text
+    movie_info['tagline'] = oneMovieXML.elements['tagline'].text if not oneMovieXML.elements['tagline'].nil?
+    movie_info['information'] = oneMovieXML.elements['information'].text if not oneMovieXML.elements['information'].nil?
+    
+    movie_info['ratings'] = {}
+    movie_info['ratings']['cinepassion'] = {}
+    movie_info['ratings']['allocine'] = {}
+    movie_info['ratings']['imdb'] = {}
+    ratings = oneMovieXML.elements["ratings"]
+    ratings_cinepassion = ratings.elements["rating[@type='cinepassion']"]
+    movie_info['ratings']['cinepassion']['votes'] = ratings_cinepassion.attributes['votes']
+    movie_info['ratings']['cinepassion']['value'] = ratings_cinepassion.text
+    ratings_allocine = ratings.elements["rating[@type='allocine']"]
+    movie_info['ratings']['allocine']['votes'] = ratings_allocine.attributes['votes']
+    movie_info['ratings']['allocine']['value'] = ratings_allocine.text
+    ratings_imdb = ratings.elements["rating[@type='imdb']"]
+    movie_info['ratings']['imdb']['votes'] = ratings_imdb.attributes['votes']
+    movie_info['ratings']['imdb']['value'] = ratings_imdb.text
+    
+    movie_info['directors'] = []
+    directors = oneMovieXML.elements["directors"]
+    if not directors.nil?
+      directors.each_element("director") do |director|
+        movie_info['directors'].push(director.text)
+      end
+    end
+    
+    movie_info['trailers'] = []
+    trailers = oneMovieXML.elements["trailers"]
+    if not trailers.nil?
+      trailers.each_element("trailer") do |trailer|
+        movie_info['trailers'].push(trailer.text)
+      end
+    end
+    
+    movie_info['countries'] = []
+    countries = oneMovieXML.elements["countries"]
+    if not countries.nil?
+      countries.each_element("country") do |country|
+        movie_info['countries'].push(country.text)
+      end
+    end
+    
+    movie_info['genres'] = []
+    genres = oneMovieXML.elements["genres"]
+    if not genres.nil?
+      genres.each_element("genre") do |genre|
+        movie_info['genres'].push(genre.text)
+      end
+    end
+    
+    movie_info['studios'] = []
+    studios = oneMovieXML.elements["studios"]
+    if not studios.nil?
+      studios.each_element("studio") do |studio|
+        movie_info['studios'].push(studio.text)
+      end
+    end
+    
+    movie_info['credits'] = []
+    credits = oneMovieXML.elements["credits"]
+    if not credits.nil?
+      credits.each_element("credit") do |credit|
+        movie_info['credits'].push(credit.text)
+      end
+    end
     
     movie_info['images'] = {}
     images = oneMovieXML.elements["images"]
@@ -217,20 +291,22 @@ class CinePassion
       end
     end
     
-    movie_info['ratings'] = {}
-    movie_info['ratings']['cinepassion'] = {}
-    movie_info['ratings']['allocine'] = {}
-    movie_info['ratings']['imdb'] = {}
-    ratings = oneMovieXML.elements["ratings"]
-    ratings_cinepassion = ratings.elements["rating[@type='cinepassion']"]
-    movie_info['ratings']['cinepassion']['votes'] = ratings_cinepassion.attributes['votes']
-    movie_info['ratings']['cinepassion']['value'] = ratings_cinepassion.text
-    ratings_allocine = ratings.elements["rating[@type='allocine']"]
-    movie_info['ratings']['allocine']['votes'] = ratings_allocine.attributes['votes']
-    movie_info['ratings']['allocine']['value'] = ratings_allocine.text
-    ratings_imdb = ratings.elements["rating[@type='imdb']"]
-    movie_info['ratings']['imdb']['votes'] = ratings_imdb.attributes['votes']
-    movie_info['ratings']['imdb']['value'] = ratings_imdb.text
+    movie_info['casting'] = {}
+    casting = oneMovieXML.elements["casting"]
+    if not casting.nil?
+      casting.each_element("person") do |person|
+         person_id = person.attributes['id']
+         
+         if not movie_info['casting'].has_key? person_id
+            movie_info['casting'][person_id] = {}
+         end
+         
+         movie_info['casting'][person_id]['name'] = person.attributes['name']
+         movie_info['casting'][person_id]['character'] = person.attributes['character']
+         movie_info['casting'][person_id]['idthumb'] = person.attributes['idthumb']
+         movie_info['casting'][person_id]['thumb'] = person.attributes['thumb']
+      end
+    end
     
     nfo_base = "#{@siteurl}/scraper/index.php?id=#{movie_info['id']}&Download=1"
     movie_info['nfo'] = {}

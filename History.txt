@@ -16,3 +16,31 @@
 
   * Extract all movies from XML
   * Movie can have'nt pictures
+
+=== 0.8.0 / 2010-09-05
+
+* Add SYNOPSIS
+* Remove lib/cine_passion_config.rb.sample
+* Can change : lang, host & Better search
+
+* defineOtherSiteURL(site) to change remote server
+   Default "http://passion-xbmc.org
+* defineLanguage(lang)
+    Default en / Scraper allow en/fr
+* DataLoadFromSite give now a URL not a search
+    Replace by MovieSearch
+* GenerateURLMovieSearch -> Get URL for Movie.Search => Internal use
+* GenerateURLMovieGetInfo -> Get URL for Movie.GetInfo => Internal use
+* MovieSearch
+* MovieGetInfo
+* Rename ScrapAnalyseOneMovie into ScrapAnalyseOneMovieElement
+* Rename Scrap into CleanMovieName and now return only short name => Can be deprecated in the future
+
+=== 0.9.0 / 2010-09-06
+
+* Can search with MovieID MovieSearch("1234", "ID")
+
+=== 0.10.0 / 2010-09-06
+
+* version() return library version
+* Better MovieGetInfo() (Work now)
