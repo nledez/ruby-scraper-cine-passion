@@ -44,3 +44,7 @@
 
 * version() return library version
 * Better MovieGetInfo() (Work now)
+
+=== 0.10.2 / 2010-09-07
+
+* Correct MovieGetInfo to make search By ID
